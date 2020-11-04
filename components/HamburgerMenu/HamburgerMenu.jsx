@@ -11,6 +11,8 @@ const HamburgerMenu = (props) => {
 
   const [active, setActive] = useState(false)
 
+  let color = 'rgb(32, 32, 32)'
+
   return (
     <Tag
       className={`${styles.hamburger_menu} ${
@@ -95,7 +97,7 @@ const HamburgerMenu = (props) => {
           left: 0px;
           top: 0px;
           border-radius: 0.2rem;
-          background: rgb(32, 32, 32);
+          background: ${color};
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
 
@@ -116,14 +118,14 @@ const HamburgerMenu = (props) => {
           left: 0px;
           top: 0px;
           border-radius: 0.2rem;
-          background: rgb(32, 32, 32);
+          background: ${color};
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
         .l1-inactive::after {
           content: ' ';
           display: block;
           position: absolute;
-          background: rgb(32, 32, 32);
+          background: ${color};
           right: 0px;
           height: 0.3rem;
           width: 1.8rem;
@@ -150,14 +152,14 @@ const HamburgerMenu = (props) => {
           top: 0px;
           transform-origin: 0% 50%;
           border-radius: 0.2rem;
-          background: rgb(32, 32, 32);
+          background: ${color};
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
         .l2-inactive::after {
           content: ' ';
           display: block;
           position: absolute;
-          background: rgb(32, 32, 32);
+          background: ${color};
           right: 0px;
           height: 0.3rem;
           width: 0.3rem;
@@ -185,7 +187,7 @@ const HamburgerMenu = (props) => {
           left: 0px;
           top: 0px;
           border-radius: 0.2rem;
-          background: rgb(32, 32, 32);
+          background: ${color};
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
 
@@ -208,7 +210,7 @@ const HamburgerMenu = (props) => {
           left: 0px;
           top: 0px;
           border-radius: 0.2rem;
-          background: rgb(32, 32, 32);
+          background: ${color};
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
 
@@ -216,7 +218,7 @@ const HamburgerMenu = (props) => {
           content: ' ';
           display: block;
           position: absolute;
-          background: rgb(32, 32, 32);
+          background: ${color};
           right: 0px;
           height: 0.3rem;
           width: 1.8rem;
@@ -245,7 +247,7 @@ const HamburgerMenu = (props) => {
           transform: translate(-0.15rem, 0%);
           transform-origin: 0% 50%;
           border-radius: 0.2rem;
-          background: rgb(32, 32, 32);
+          background: ${color};
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
 
@@ -253,7 +255,7 @@ const HamburgerMenu = (props) => {
           content: ' ';
           display: block;
           position: absolute;
-          background: rgb(32, 32, 32);
+          background: ${color};
           right: 0px;
           height: 0.3rem;
           width: 0.3rem;
