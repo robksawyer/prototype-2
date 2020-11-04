@@ -11,7 +11,6 @@ const HamburgerMenu = (props) => {
 
   const [active, setActive] = useState(false)
 
-  console.log('active', active)
   return (
     <Tag
       className={`${styles.hamburger_menu} ${
@@ -27,22 +26,30 @@ const HamburgerMenu = (props) => {
         onClick={() => setActive(!active)}
       >
         <div className="inner-container menu">
-          {active ? (
-            <>
-              <div className="line-0 l0-active"></div>
-              <div className="line-1 l1-active"></div>
-              <div className="line-3 l2-active"></div>
-            </>
-          ) : (
-            <>
-              <div className="line-0 l0-inactive"></div>
-              <div className="line-1 l1-inactive"></div>
-              <div className="line-3 l2-inactive"></div>
-            </>
-          )}
+          <div
+            className={`${
+              active ? 'line-0 l0' : 'line-0-inactive l0-inactive'
+            }`}
+          ></div>
+          <div
+            className={`${
+              active ? 'line-1 l1' : 'line-1-inactive l1-inactive'
+            }`}
+          ></div>
+          <div
+            className={`${
+              active ? 'line-2 l2' : 'line-2-inactive l2-inactive'
+            }`}
+          ></div>
         </div>
       </div>
       <style jsx>{`
+        *,
+        *:after,
+        *:before {
+          box-sizing: border-box;
+        }
+
         .outer-container {
           position: fixed;
           right: 1.3rem;
@@ -53,6 +60,7 @@ const HamburgerMenu = (props) => {
           height: 4rem;
           padding: 0.8rem;
         }
+
         @media (min-width: 768px) {
           .outer-container {
             top: 3rem;
@@ -60,7 +68,7 @@ const HamburgerMenu = (props) => {
           }
         }
 
-        .cNaOAr {
+        .menu {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
@@ -69,6 +77,7 @@ const HamburgerMenu = (props) => {
           width: 2.4rem;
           height: 2.4rem;
         }
+
         .l0-inactive {
           height: 0.3rem;
           width: 2.4rem;
@@ -165,7 +174,7 @@ const HamburgerMenu = (props) => {
           height: 2.4rem;
         }
 
-        .l0-active {
+        .l0 {
           height: 0.3rem;
           width: 3.4rem;
           background: transparent;
@@ -175,7 +184,7 @@ const HamburgerMenu = (props) => {
           transform-origin: 0% 50%;
         }
 
-        .l0-active::before {
+        .l0::before {
           content: '';
           display: block;
           width: 1.7rem;
@@ -188,7 +197,7 @@ const HamburgerMenu = (props) => {
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
 
-        .l1-active {
+        .l1 {
           position: relative;
           height: 0.3rem;
           width: 3.4rem;
@@ -198,7 +207,7 @@ const HamburgerMenu = (props) => {
           transform-origin: 0% 50%;
         }
 
-        .l1-active::before {
+        .l1::before {
           content: '';
           display: block;
           width: 1.8rem;
@@ -211,7 +220,7 @@ const HamburgerMenu = (props) => {
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
 
-        .l1-active::after {
+        .l1::after {
           content: '';
           display: block;
           position: absolute;
@@ -223,7 +232,7 @@ const HamburgerMenu = (props) => {
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
 
-        .l2-active {
+        .l2 {
           height: 0.3rem;
           width: 3.4rem;
           align-self: flex-end;
@@ -233,7 +242,7 @@ const HamburgerMenu = (props) => {
           transform-origin: 100% 50%;
         }
 
-        .l2-active::before {
+        .l2::before {
           content: '';
           display: block;
           width: 1.3rem;
@@ -248,7 +257,7 @@ const HamburgerMenu = (props) => {
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
 
-        .l2-active::after {
+        .l2::after {
           content: '';
           display: block;
           position: absolute;
@@ -260,25 +269,25 @@ const HamburgerMenu = (props) => {
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
 
-        .menu:hover .line-3::before {
+        .menu:hover .line-2::before {
           width: 0.3rem;
         }
 
         .menu:hover .line-0::before,
         .menu:hover .line-1::before,
         .menu:hover .line-1::after,
-        .menu:hover .line-3::after {
+        .menu:hover .line-2::after {
           width: 1.3rem;
         }
 
-        .cNaOAr:hover .line-0::before,
-        .cNaOAr:hover .line-1::before,
-        .cNaOAr:hover .line-1::after,
-        .cNaOAr:hover .line-3::after {
+        .menu:hover .line-0-inactive::before,
+        .menu:hover .line-1-inactive::before,
+        .menu:hover .line-1-inactive::after,
+        .menu:hover .line-2-inactive::after {
           width: 1.8rem;
         }
 
-        .cNaOAr:hover .line-3::before {
+        .menu:hover .line-2::before {
           width: 0.3rem;
         }
       `}</style>
