@@ -3,6 +3,10 @@ import styles from '../styles/Home.module.css'
 
 import MainScene from '../components/MainScene'
 
+const CursorCircle = dynamic(() => import('../components/CursorCircle'), {
+  ssr: false,
+})
+
 export default function Home() {
   return (
     <div
@@ -16,7 +20,7 @@ export default function Home() {
       <main className={`${styles.main} flex flex-grow flex-col`}>
         <MainScene />
       </main>
-
+      <CursorCircle />
       <footer
         className={`${styles.footer} w-full h-50 bg-black text-white px-40 flex align-center items-center justify-center uppercase`}
       >
