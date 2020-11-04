@@ -296,7 +296,7 @@ HamburgerMenu.propTypes = {
 
 HamburgerMenu.defaultProps = {
   tagName: 'div',
-  className: '',
+  className: 'fixed z-10 transform scale-75 absolute top-0 right-0 pr-20',
   variant: 'default',
   children: '',
 }
