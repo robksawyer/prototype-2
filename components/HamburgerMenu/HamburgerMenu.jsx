@@ -87,7 +87,7 @@ const HamburgerMenu = (props) => {
           transform-origin: 0% 50%;
         }
         .l0-inactive::before {
-          content: '';
+          content: ' ';
           display: block;
           width: 2.4rem;
           height: 0.3rem;
@@ -98,6 +98,7 @@ const HamburgerMenu = (props) => {
           background: rgb(32, 32, 32);
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
+
         .l1-inactive {
           position: relative;
           height: 0.3rem;
@@ -107,7 +108,7 @@ const HamburgerMenu = (props) => {
           transform-origin: 0% 50%;
         }
         .l1-inactive::before {
-          content: '';
+          content: ' ';
           display: block;
           width: 1.8rem;
           height: 0.3rem;
@@ -119,7 +120,7 @@ const HamburgerMenu = (props) => {
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
         .l1-inactive::after {
-          content: '';
+          content: ' ';
           display: block;
           position: absolute;
           background: rgb(32, 32, 32);
@@ -129,6 +130,7 @@ const HamburgerMenu = (props) => {
           border-radius: 0.2rem;
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
+
         .l2-inactive {
           height: 0.3rem;
           width: 2.4rem;
@@ -139,7 +141,7 @@ const HamburgerMenu = (props) => {
           transform-origin: 100% 50%;
         }
         .l2-inactive::before {
-          content: '';
+          content: ' ';
           display: block;
           width: 1.8rem;
           height: 0.3rem;
@@ -152,7 +154,7 @@ const HamburgerMenu = (props) => {
           transition: width 0.2s ease 0s, background 0.2s ease 0s;
         }
         .l2-inactive::after {
-          content: '';
+          content: ' ';
           display: block;
           position: absolute;
           background: rgb(32, 32, 32);
@@ -164,16 +166,6 @@ const HamburgerMenu = (props) => {
         }
 
         /* Active state */
-        .menu {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          -webkit-box-pack: justify;
-          justify-content: space-between;
-          width: 2.4rem;
-          height: 2.4rem;
-        }
-
         .l0 {
           height: 0.3rem;
           width: 3.4rem;
@@ -185,7 +177,7 @@ const HamburgerMenu = (props) => {
         }
 
         .l0::before {
-          content: '';
+          content: ' ';
           display: block;
           width: 1.7rem;
           height: 0.3rem;
@@ -208,7 +200,7 @@ const HamburgerMenu = (props) => {
         }
 
         .l1::before {
-          content: '';
+          content: ' ';
           display: block;
           width: 1.8rem;
           height: 0.3rem;
@@ -221,7 +213,7 @@ const HamburgerMenu = (props) => {
         }
 
         .l1::after {
-          content: '';
+          content: ' ';
           display: block;
           position: absolute;
           background: rgb(32, 32, 32);
@@ -258,7 +250,7 @@ const HamburgerMenu = (props) => {
         }
 
         .l2::after {
-          content: '';
+          content: ' ';
           display: block;
           position: absolute;
           background: rgb(32, 32, 32);

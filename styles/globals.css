@@ -19,7 +19,7 @@ body,
   overscroll-behavior-y: none;
   scroll-behavior: smooth;
   overflow-x: hidden;
-  font-size: 12px;
+  font-size: 14px;
   height: auto;
   width: 100vw;
 }
