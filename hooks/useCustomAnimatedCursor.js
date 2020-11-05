@@ -70,8 +70,10 @@ export const useCustomAnimatedCursor = ({ innerRef, outerRef }) => {
       if (previousTimeRef.current !== undefined) {
         coords.x += (endX.current - coords.x) / 8
         coords.y += (endY.current - coords.y) / 8
-        outerRef.current.style.top = coords.y + 'px'
-        outerRef.current.style.left = coords.x + 'px'
+        if (outerRef && outerRef.current) {
+          outerRef.current.style.top = coords.y + 'px'
+          outerRef.current.style.left = coords.x + 'px'
+        }
       }
       previousTimeRef.current = time
       requestRef.current = requestAnimationFrame(animateOuterCursor)

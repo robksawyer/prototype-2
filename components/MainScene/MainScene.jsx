@@ -1,7 +1,7 @@
 /**
  * @file MainScene.js
  */
-import React, { useRef, useEffect } from 'react'
+import React, { Suspense, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import { useTweaks } from 'use-tweaks'
@@ -29,8 +29,15 @@ import {
   BoxHelper,
   SpotLightHelper,
   PointLightHelper,
+  Color,
 } from 'three'
-import { useHelper, OrbitControls} from '@react-three/drei'
+import {
+  Html,
+  useHelper,
+  OrbitControls,
+  shaderMaterial,
+  useCubeTexture,
+} from '@react-three/drei'
 // import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { VertexNormalsHelper } from 'three/examples/jsm/helpers/VertexNormalsHelper'
 import { FaceNormalsHelper } from 'three/examples/jsm/helpers/FaceNormalsHelper'
@@ -38,10 +45,40 @@ import { gsap } from 'gsap'
 
 import styles from './MainScene.module.css'
 
+import Loader from '../Loader'
+
+// Custom Shader
+import vertex from './shaders/carPaint.vert'
+import fragment from './shaders/carPaint.frag'
+const CarPaintMaterial = shaderMaterial(
+  {
+    flakeScale: 1.0,
+    paintColor1: new Color(0.2, 0.0, 0.1),
+    paintColor2: new Color(0.2, 0.0, 0.1),
+    paintColor3: new Color(0.2, 0.0, 0.1),
+    normalPerturbation: 1.4,
+    microflakePerturbationA: 1.0,
+    microflakePerturbation: 1.0,
+    glossLevel: 1.0,
+    brightnessFactor: 1.0,
+    envMap: '',
+  },
+  vertex,
+  fragment
+)
+extend({ CarPaintMaterial })
+
 // Effects for the main scene
 const Effects = () => {
   return <EffectComposer></EffectComposer>
 }
+
+const GeometryContainer = () => (
+  <mesh ref={mesh} position={[0, 2, 0]} castShadow>
+    <sphereGeometry attach="geometry" args={[1, 32, 32]} />
+    <carPaintMaterial attach="material" />
+  </mesh>
+)
 
 const Scene = () => {
   const mesh = useRef()
@@ -50,6 +87,36 @@ const Scene = () => {
 
   const spotLight = useRef()
   const pointLight = useRef()
+
+  const envMap = useCubeTexture(
+    [
+      'field_px.png',
+      'field_nx.png',
+      'field_py.png',
+      'field_ny.png',
+      'field_pz.png',
+      'field_nz.png',
+    ],
+    { path: '/3d/cube_texture_field' }
+  )
+
+  console.log('envMap', envMap)
+
+  // useEffect(() => {
+  //   // flakeScale: 1.0,
+  //   // paintColor1: new Color(0.2, 0.0, 0.1),
+  //   // paintColor2: new Color(0.2, 0.0, 0.1),
+  //   // paintColor3: new Color(0.2, 0.0, 0.1),
+  //   // normalPerturbation: 1.4,
+  //   // microflakePerturbationA: 1.0,
+  //   // microflakePerturbation: 1.0,
+  //   // glossLevel: 1.0,
+  //   // brightnessFactor: 1.0,
+  //   // envMap: envMap,
+  //   if (envMap) {
+  //     mesh.current.material.uniforms['envMap'].value = envMap
+  //   }
+  // }, [envMap])
 
   useFrame(({ clock }) => {
     mesh.current.rotation.x = (Math.sin(clock.elapsedTime) * Math.PI) / 4
@@ -61,11 +128,11 @@ const Scene = () => {
   })
 
   useEffect(() => void (spotLight.current.target = mesh.current), [scene])
-  useHelper(spotLight, SpotLightHelper, 'teal')
-  useHelper(pointLight, PointLightHelper, 0.5, 'hotpink')
-  useHelper(mesh, BoxHelper, '#272740')
-  useHelper(mesh, VertexNormalsHelper, 1, '#272740')
-  useHelper(mesh, FaceNormalsHelper, 0.5, '#272740')
+  // useHelper(spotLight, SpotLightHelper, 'teal')
+  // useHelper(pointLight, PointLightHelper, 0.5, 'hotpink')
+  // useHelper(mesh, BoxHelper, '#272740')
+  // useHelper(mesh, VertexNormalsHelper, 1, '#272740')
+  // useHelper(mesh, FaceNormalsHelper, 0.5, '#272740')
 
   return (
     <>
@@ -85,10 +152,9 @@ const Scene = () => {
         angle={0.5}
         distance={20}
       />
-      <mesh ref={mesh} position={[0, 2, 0]} castShadow>
-        <boxGeometry attach="geometry" />
-        <meshStandardMaterial attach="material" color="lightblue" />
-      </mesh>
+
+      <GeometryContainer />
+
       <mesh rotation-x={-Math.PI / 2} receiveShadow>
         <planeBufferGeometry args={[100, 100]} attach="geometry" />
         <shadowMaterial attach="material" opacity={0.5} />
@@ -116,7 +182,16 @@ const MainScene = (props) => {
       }}
     >
       <fog attach="fog" args={['floralwhite', 0, 20]} />
-      <Scene />
+      <Suspense
+        fallback={
+          <Html center>
+            <Loader />
+          </Html>
+        }
+      >
+        <Scene />
+      </Suspense>
+
       {/* <Effects /> */}
       <OrbitControls />
     </Tag>

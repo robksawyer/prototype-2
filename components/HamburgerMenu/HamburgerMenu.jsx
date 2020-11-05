@@ -21,8 +21,8 @@ const HamburgerMenu = (props) => {
     >
       <div
         role="button"
-        ariaLabel="Open menu"
-        ariaPressed="false"
+        aria-label="Open menu"
+        aria-pressed="false"
         tabIndex="0"
         className="hamburger-menu outer-container focus:outline-none focus:shadow-none"
         onClick={() => setActive(!active)}
