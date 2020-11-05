@@ -136,9 +136,9 @@ const Scene = () => {
   })
 
   useEffect(() => void (spotLight.current.target = mesh.current), [scene])
-  useHelper(spotLight, SpotLightHelper, 'teal')
-  useHelper(pointLight, PointLightHelper, 0.5, 'hotpink')
-  useHelper(mesh, BoxHelper, '#272740')
+  // useHelper(spotLight, SpotLightHelper, 'teal')
+  // useHelper(pointLight, PointLightHelper, 0.5, 'hotpink')
+  // useHelper(mesh, BoxHelper, '#272740')
   // useHelper(mesh, VertexNormalsHelper, 1, '#272740')
   // useHelper(mesh, FaceNormalsHelper, 0.5, '#272740')
 
