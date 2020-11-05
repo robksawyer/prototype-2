@@ -48,8 +48,12 @@ import styles from './MainScene.module.css'
 import Loader from '../Loader'
 
 // Custom Shader
-import vertex from './shaders/carPaint.vert'
-import fragment from './shaders/carPaint.frag'
+import * as carPaintVert from './shaders/carPaint.vert'
+import * as carPaintFrag from './shaders/carPaint.frag'
+
+import * as cubeMapVert from './shaders/cubeMap.vert'
+import * as cubeMapFrag from './shaders/cubeMap.frag'
+
 const CarPaintMaterial = shaderMaterial(
   {
     flakeScale: 1.0,
@@ -63,10 +67,24 @@ const CarPaintMaterial = shaderMaterial(
     brightnessFactor: 1.0,
     envMap: '',
   },
-  vertex,
-  fragment
+  carPaintVert,
+  carPaintFrag
 )
-extend({ CarPaintMaterial })
+
+const CubeMapMaterial = shaderMaterial(
+  {
+    cubemap: '',
+  },
+  cubeMapVert,
+  cubeMapFrag
+)
+
+extend({ CarPaintMaterial, CubeMapMaterial })
+
+const ZoomIn = () => {
+  const vec = new THREE.Vector3(0, 15, 30)
+  return useFrame(({ camera }) => camera.position.lerp(vec, 0.1))
+}
 
 // Effects for the main scene
 const Effects = () => {
@@ -96,18 +114,11 @@ const Scene = () => {
   console.log('envMap', envMap)
 
   // useEffect(() => {
-  //   // flakeScale: 1.0,
-  //   // paintColor1: new Color(0.2, 0.0, 0.1),
-  //   // paintColor2: new Color(0.2, 0.0, 0.1),
-  //   // paintColor3: new Color(0.2, 0.0, 0.1),
-  //   // normalPerturbation: 1.4,
-  //   // microflakePerturbationA: 1.0,
-  //   // microflakePerturbation: 1.0,
-  //   // glossLevel: 1.0,
-  //   // brightnessFactor: 1.0,
-  //   // envMap: envMap,
   //   if (envMap) {
-  //     mesh.current.material.uniforms['envMap'].value = envMap
+  //     // mesh.current.material.uniforms['envMap'].value = envMap
+  //     console.log('mesh.current.material', mesh.current.material)
+  //     mesh.current.material.uniforms['cubemap'].value = envMap
+  //     mesh.current.material.uniformsNeedUpdate = true
   //   }
   // }, [envMap])
 
@@ -148,7 +159,13 @@ const Scene = () => {
 
       <mesh ref={mesh} position={[0, 2, 0]} castShadow>
         <sphereGeometry attach="geometry" args={[1, 32, 32]} />
-        <carPaintMaterial attach="material" />
+        {/* <carPaintMaterial attach="material" /> */}
+        <shaderMaterial
+          attach="material"
+          uniforms={{ cubemap: envMap }}
+          vertexShader={cubeMapVert}
+          fragmentShader={cubeMapFrag}
+        />
       </mesh>
       <mesh rotation-x={-Math.PI / 2} receiveShadow>
         <planeBufferGeometry args={[100, 100]} attach="geometry" />
