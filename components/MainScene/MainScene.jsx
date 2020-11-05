@@ -8,6 +8,7 @@ import useErrorBoundary from 'use-error-boundary'
 import { useTweaks } from 'use-tweaks'
 import { useInView } from 'react-intersection-observer'
 import useMobileDetect from 'use-mobile-detect-hook'
+import { easeExpInOut, easeBackInOut } from 'd3-ease'
 import {
   extend,
   Canvas,
@@ -15,6 +16,7 @@ import {
   useThree,
   useLoader,
 } from 'react-three-fiber'
+
 import {
   EffectComposer,
   Bloom,
@@ -101,17 +103,19 @@ const Scene = () => {
 
   const envMap = useCubeTexture(
     [
-      'field_px.png',
-      'field_nx.png',
-      'field_py.png',
-      'field_ny.png',
-      'field_pz.png',
-      'field_nz.png',
+      'sky_px.png',
+      'sky_nx.png',
+      'sky_py.png',
+      'sky_ny.png',
+      'sky_pz.png',
+      'sky_nz.png',
     ],
-    { path: '/3d/cube_texture_field/' }
+    { path: '/3d/sky0/' }
   )
 
-  console.log('envMap', envMap)
+  const bumpMap = useLoader(TextureLoader, '/3d/bumps/fabric-bump.png')
+  bumpMap.wrapS = bumpMap.wrapT = RepeatWrapping
+  bumpMap.repeat.set(1, 1)
 
   // useEffect(() => {
   //   if (envMap) {
@@ -132,19 +136,31 @@ const Scene = () => {
   })
 
   useEffect(() => void (spotLight.current.target = mesh.current), [scene])
-  // useHelper(spotLight, SpotLightHelper, 'teal')
-  // useHelper(pointLight, PointLightHelper, 0.5, 'hotpink')
-  // useHelper(mesh, BoxHelper, '#272740')
+  useHelper(spotLight, SpotLightHelper, 'teal')
+  useHelper(pointLight, PointLightHelper, 0.5, 'hotpink')
+  useHelper(mesh, BoxHelper, '#272740')
   // useHelper(mesh, VertexNormalsHelper, 1, '#272740')
   // useHelper(mesh, FaceNormalsHelper, 0.5, '#272740')
 
+  // Animate stuff
+  useEffect(() => {
+    console.log('mesh.current.material', mesh.current.material)
+    gsap.to(mesh.current.material, {
+      roughness: 0.5,
+      duration: 3,
+      ease: easeBackInOut,
+      repeat: -1,
+      yoyo: true,
+    })
+  }, [mesh])
+
   return (
     <>
-      <pointLight position={[-10, 0, -20]} color="lightblue" intensity={2.5} />
+      <pointLight position={[-10, 0, -20]} color="#3083DC" intensity={2.5} />
       <group ref={group}>
         <pointLight
           ref={pointLight}
-          color="red"
+          color="#1ECBF8"
           position={[4, 4, 0]}
           intensity={5}
         />
@@ -159,13 +175,21 @@ const Scene = () => {
 
       <mesh ref={mesh} position={[0, 2, 0]} castShadow>
         <sphereGeometry attach="geometry" args={[1, 32, 32]} />
-        {/* <carPaintMaterial attach="material" /> */}
-        <shaderMaterial
+        <meshStandardMaterial
+          envMap={envMap}
           attach="material"
-          uniforms={{ cubemap: envMap }}
+          roughness={0}
+          metalness={0.9}
+          bumpMap={bumpMap}
+          color="#3083DC"
+        />
+        {/* <carPaintMaterial attach="material" /> */}
+        {/* <shaderMaterial
+          attach="material"
+          uniforms={{ cubemap: ??? }}
           vertexShader={cubeMapVert}
           fragmentShader={cubeMapFrag}
-        />
+        /> */}
       </mesh>
       <mesh rotation-x={-Math.PI / 2} receiveShadow>
         <planeBufferGeometry args={[100, 100]} attach="geometry" />
