@@ -3,9 +3,9 @@
  */
 import React, { Suspense, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import useErrorBoundary from 'use-error-boundary'
 
 import { useTweaks } from 'use-tweaks'
-import useErrorBoundary from 'use-error-boundary'
 import { useInView } from 'react-intersection-observer'
 import useMobileDetect from 'use-mobile-detect-hook'
 import {
@@ -73,13 +73,6 @@ const Effects = () => {
   return <EffectComposer></EffectComposer>
 }
 
-const GeometryContainer = () => (
-  <mesh ref={mesh} position={[0, 2, 0]} castShadow>
-    <sphereGeometry attach="geometry" args={[1, 32, 32]} />
-    <carPaintMaterial attach="material" />
-  </mesh>
-)
-
 const Scene = () => {
   const mesh = useRef()
   const { scene } = useThree()
@@ -97,7 +90,7 @@ const Scene = () => {
       'field_pz.png',
       'field_nz.png',
     ],
-    { path: '/3d/cube_texture_field' }
+    { path: '/3d/cube_texture_field/' }
   )
 
   console.log('envMap', envMap)
@@ -153,8 +146,10 @@ const Scene = () => {
         distance={20}
       />
 
-      <GeometryContainer />
-
+      <mesh ref={mesh} position={[0, 2, 0]} castShadow>
+        <sphereGeometry attach="geometry" args={[1, 32, 32]} />
+        <carPaintMaterial attach="material" />
+      </mesh>
       <mesh rotation-x={-Math.PI / 2} receiveShadow>
         <planeBufferGeometry args={[100, 100]} attach="geometry" />
         <shadowMaterial attach="material" opacity={0.5} />
@@ -167,34 +162,38 @@ const Scene = () => {
 const MainScene = (props) => {
   const { tagName: Tag, className, variant, children } = props
 
-  return (
-    <Tag
-      colorManagement
-      shadowMap
-      camera={{ position: [-5, 5, 5] }}
-      className={`${styles.main_scene} ${
-        styles[`main_scene__${variant}`]
-      } ${className}`}
-      style={{
-        width: '100vw',
-        height: 'calc(100vh - 50px)',
-        background: 'floralwhite',
-      }}
-    >
-      <fog attach="fog" args={['floralwhite', 0, 20]} />
-      <Suspense
-        fallback={
-          <Html center>
-            <Loader />
-          </Html>
-        }
-      >
-        <Scene />
-      </Suspense>
+  const { ErrorBoundary, didCatch, error } = useErrorBoundary()
 
-      {/* <Effects /> */}
-      <OrbitControls />
-    </Tag>
+  return (
+    <ErrorBoundary>
+      <Tag
+        colorManagement
+        shadowMap
+        camera={{ position: [-5, 5, 5] }}
+        className={`${styles.main_scene} ${
+          styles[`main_scene__${variant}`]
+        } ${className}`}
+        style={{
+          width: '100vw',
+          height: 'calc(100vh - 50px)',
+          background: 'floralwhite',
+        }}
+      >
+        <fog attach="fog" args={['floralwhite', 0, 20]} />
+        <Suspense
+          fallback={
+            <Html center>
+              <Loader />
+            </Html>
+          }
+        >
+          <Scene />
+        </Suspense>
+
+        {/* <Effects /> */}
+        <OrbitControls />
+      </Tag>
+    </ErrorBoundary>
   )
 }
 
